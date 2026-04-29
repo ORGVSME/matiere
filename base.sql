@@ -63,6 +63,9 @@ CREATE TABLE credit (
 CREATE TABLE etudiant (
     id INT AUTO_INCREMENT PRIMARY KEY,
     num_matiere VARCHAR(50),
+    nom VARCHAR(255),
+    prenom VARCHAR(255),
+    matricule VARCHAR(50),
     note FLOAT,
     result VARCHAR(50)
 );

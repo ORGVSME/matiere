@@ -47,20 +47,21 @@ class Home extends BaseController
                 'is_logged_in' => true
             ]);
 
-            return redirect()->to('/dashboard');
+            return redirect()->to('/dashbord');
         } else {
             // Authentification échouée
             return redirect()->back()->with('error', 'Email ou mot de passe incorrect');
         }
     }
-
     /**
-     * Affiche le tableau de bord
+     * Affiche le tableau de bord (route /dashbord)
      */
-    public function dashboard(): string
+    public function dashbord(): string
     {
         return view('dashboard');
     }
+
+
 
     /**
      * Déconnexion

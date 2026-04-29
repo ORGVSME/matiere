@@ -1,271 +1,368 @@
-<?php
-$this->extend('layouts/main');
-$this->section('title', 'Gestion des utilisateurs');
-$this->section('page_title', 'Gestion des utilisateurs');
-$this->section('content');
-?>
+<!DOCTYPE html>
+<html lang="fr">
 
-<div class="container-fluid">
-    <!-- Affichage des messages flash -->
-    <?php if (session()->getFlashdata('success')): ?>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <i class="bi bi-check-circle"></i> <?= session()->getFlashdata('success') ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SysInfo — Utilisateurs</title>
+    <link rel="stylesheet" href="<?= base_url('style.css') ?>" />
+</head>
 
-    <?php if (session()->getFlashdata('error')): ?>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <i class="bi bi-exclamation-circle"></i> <?= session()->getFlashdata('error') ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
+<body>
 
-    <!-- En-tête avec titre et boutons -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="h3">Liste des utilisateurs</h1>
-            <small class="text-muted">Accueil / Utilisateurs</small>
-        </div>
-        <div>
-            <a href="<?= site_url('/utilisateurs/export') ?>" class="btn btn-outline-primary me-2" title="Exporter les utilisateurs">
-                <i class="bi bi-download"></i> Exporter
-            </a>
-            <a href="<?= site_url('/utilisateurs/create') ?>" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> Nouvel utilisateur
-            </a>
-        </div>
-    </div>
+    <div class="app">
 
-    <!-- Filtres -->
-    <div class="card mb-4">
-        <div class="card-body">
-            <form method="GET" action="<?= site_url('/utilisateurs') ?>" class="row g-3 align-items-end">
-                <div class="col-md-3">
-                    <label for="search" class="form-label">Rechercher un utilisateur...</label>
-                    <input type="text" class="form-control" id="search" name="search" 
-                           placeholder="Nom, email, matricule..." value="<?= esc($search) ?>">
+        <?= view('layouts/sidebar') ?>
+
+        <!-- ── Main ─────────────────────────────────────────────────────────────── -->
+        <div class="main">
+
+            <div class="topbar">
+                <div class="topbar-title">Gestion des utilisateurs</div>
+                <div class="topbar-search">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                    <input type="text" placeholder="Rechercher…" />
                 </div>
-
-                <div class="col-md-2">
-                    <label for="role" class="form-label">Tous les rôles</label>
-                    <select class="form-select" id="role" name="role">
-                        <option value="">Sélectionner...</option>
-                        <?php foreach ($roles as $r): ?>
-                            <option value="<?= esc($r['role']) ?>" 
-                                <?= ($r['role'] === $role) ? 'selected' : '' ?>>
-                                <?= esc($r['role']) ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-
-                <div class="col-md-2">
-                    <label for="status" class="form-label">Tous les statuts</label>
-                    <select class="form-select" id="status" name="status">
-                        <option value="">Sélectionner...</option>
-                        <?php foreach ($statuses as $s): ?>
-                            <option value="<?= esc($s) ?>" <?= ($s === $status) ? 'selected' : '' ?>>
-                                <?= esc($s) ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-
-                <div class="col-md-2">
-                    <label for="department" class="form-label">Département</label>
-                    <select class="form-select" id="department" name="department">
-                        <option value="">Sélectionner...</option>
-                        <?php foreach ($departments as $d): ?>
-                            <option value="<?= esc($d['department']) ?>" 
-                                <?= ($d['department'] === $department) ? 'selected' : '' ?>>
-                                <?= esc($d['department']) ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-
-                <div class="col-md-3">
-                    <button type="submit" class="btn btn-primary w-100">
-                        <i class="bi bi-funnel"></i> Filtrer les avancés
+                <div class="topbar-actions">
+                    <button class="icon-btn">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                        </svg>
+                        <span class="notif-dot"></span>
+                    </button>
+                    <button class="icon-btn">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="8" r="4" />
+                            <path d="M20 21a8 8 0 1 0-16 0" />
+                        </svg>
                     </button>
                 </div>
-            </form>
-        </div>
-    </div>
+            </div>
 
-    <!-- Tableau des utilisateurs -->
-    <div class="card">
-        <div class="table-responsive">
-            <table class="table table-hover table-sm mb-0">
-                <thead class="table-light">
-                    <tr>
-                        <th class="text-center" style="width: 30px;">
-                            <input class="form-check-input" type="checkbox" id="selectAll">
-                        </th>
-                        <th>UTILISATEUR</th>
-                        <th>MATRICULE</th>
-                        <th>RÔLE</th>
-                        <th>DÉPARTEMENT</th>
-                        <th>DERNIÈRE CONNEXION</th>
-                        <th>STATUT</th>
-                        <th class="text-center" style="width: 120px;">ACTIONS</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (!empty($users)): ?>
-                        <?php foreach ($users as $user): ?>
+            <div class="content">
+
+                <div class="page-header">
+                    <div>
+                        <h2>Liste des utilisateurs</h2>
+                        <div class="breadcrumb">Accueil / <span>Utilisateurs</span></div>
+                    </div>
+                    <div style="display:flex;gap:10px">
+                        <button class="btn btn-secondary btn-sm">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                <polyline points="7 10 12 15 17 10" />
+                                <line x1="12" y1="15" x2="12" y2="3" />
+                            </svg>
+                            Exporter
+                        </button>
+                        <a href="<?= site_url('form') ?>" class="btn btn-primary btn-sm">
+                            <svg viewBox="0 0 24 24">
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                            </svg>
+                            Nouvel utilisateur
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Toolbar filtres -->
+                <div class="toolbar">
+                    <div class="toolbar-left">
+                        <div class="search-box">
+                            <svg viewBox="0 0 24 24">
+                                <circle cx="11" cy="11" r="8" />
+                                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                            </svg>
+                            <input type="text" placeholder="Rechercher un utilisateur…" />
+                        </div>
+                        <select class="filter-select">
+                            <option>Tous les rôles</option>
+                            <option>Administrateur</option>
+                            <option>Gestionnaire</option>
+                            <option>Opérateur</option>
+                            <option>Auditeur</option>
+                        </select>
+                        <select class="filter-select">
+                            <option>Tous les statuts</option>
+                            <option>Actif</option>
+                            <option>Inactif</option>
+                            <option>Suspendu</option>
+                        </select>
+                        <select class="filter-select">
+                            <option>Département</option>
+                            <option>DSI</option>
+                            <option>Finance</option>
+                            <option>RH</option>
+                            <option>Commercial</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-ghost btn-sm">
+                        <svg viewBox="0 0 24 24">
+                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+                        </svg>
+                        Filtres avancés
+                    </button>
+                </div>
+
+                <!-- Tableau -->
+                <div class="table-card">
+                    <table>
+                        <thead>
                             <tr>
-                                <td class="text-center">
-                                    <input class="form-check-input user-checkbox" type="checkbox" 
-                                           value="<?= $user['id'] ?>">
-                                </td>
+                                <th class="td-check"><input type="checkbox" /></th>
+                                <th class="sortable">Utilisateur ▲</th>
+                                <th class="sortable">Matricule</th>
+                                <th class="sortable">Rôle</th>
+                                <th>Département</th>
+                                <th class="sortable">Dernière connexion</th>
+                                <th class="sortable">Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td><input type="checkbox" /></td>
                                 <td>
-                                    <div class="d-flex align-items-center gap-2">
-                                        <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
-                                             style="width: 36px; height: 36px; font-size: 14px; font-weight: bold; flex-shrink: 0;">
-                                            <?= strtoupper(substr($user['name'], 0, 2)) ?>
-                                        </div>
+                                    <div style="display:flex;align-items:center;gap:10px">
+                                        <div class="avatar-sm">AR</div>
                                         <div>
-                                            <strong class="d-block"><?= esc($user['name']) ?></strong>
-                                            <small class="text-muted"><?= esc($user['email']) ?></small>
+                                            <div style="font-weight:600">Andry Rakoto</div>
+                                            <div style="font-size:11px;color:var(--c-muted)">andry.rakoto@si.mg</div>
                                         </div>
                                     </div>
                                 </td>
-                                <td><code><?= esc($user['matricule']) ?></code></td>
+                                <td style="color:var(--c-muted);font-family:monospace">USR-0041</td>
+                                <td><span class="badge badge-blue">Administrateur</span></td>
+                                <td>DSI</td>
+                                <td>2026-04-29 08:12</td>
+                                <td><span class="badge badge-green">Actif</span></td>
                                 <td>
-                                    <span class="badge bg-info text-dark">
-                                        <?= esc($user['role']) ?>
-                                    </span>
-                                </td>
-                                <td><?= esc($user['department'] ?? '—') ?></td>
-                                <td>
-                                    <?php if ($user['last_login']): ?>
-                                        <small><?= date('Y-m-d H:i', strtotime($user['last_login'])) ?></small>
-                                    <?php else: ?>
-                                        <small class="text-muted">—</small>
-                                    <?php endif; ?>
-                                </td>
-                                <td>
-                                    <?php 
-                                    $statusClass = match($user['status']) {
-                                        'Actif' => 'success',
-                                        'Inactif' => 'warning',
-                                        'Suspendu' => 'danger',
-                                        default => 'secondary'
-                                    };
-                                    ?>
-                                    <span class="badge bg-<?= $statusClass ?>">
-                                        <?= esc($user['status']) ?>
-                                    </span>
-                                </td>
-                                <td class="text-center">
-                                    <div class="btn-group btn-group-sm" role="group">
-                                        <a href="<?= site_url('/utilisateurs/view/' . $user['id']) ?>" 
-                                           class="btn btn-outline-secondary" title="Voir" data-bs-toggle="tooltip">
-                                            <i class="bi bi-eye"></i>
-                                        </a>
-                                        <a href="<?= site_url('/utilisateurs/edit/' . $user['id']) ?>" 
-                                           class="btn btn-outline-secondary" title="Éditer" data-bs-toggle="tooltip">
-                                            <i class="bi bi-pencil"></i>
-                                        </a>
-                                        <a href="<?= site_url('/utilisateurs/delete/' . $user['id']) ?>" 
-                                           class="btn btn-outline-danger" title="Supprimer" data-bs-toggle="tooltip"
-                                           onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">
-                                            <i class="bi bi-trash"></i>
-                                        </a>
+                                    <div class="td-actions">
+                                        <button class="action-btn" title="Voir"><svg viewBox="0 0 24 24">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                                <circle cx="12" cy="12" r="3" />
+                                            </svg></button>
+                                        <a href="<?= site_url('form') ?>" class="action-btn" title="Modifier"><svg viewBox="0 0 24 24">
+                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                            </svg></a>
+                                        <button class="action-btn del" title="Supprimer"><svg viewBox="0 0 24 24">
+                                                <polyline points="3 6 5 6 21 6" />
+                                                <path d="M19 6l-1 14H6L5 6" />
+                                                <path d="M10 11v6M14 11v6" />
+                                                <path d="M9 6V4h6v2" />
+                                            </svg></button>
                                     </div>
                                 </td>
                             </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="8" class="text-center py-5 text-muted">
-                                <i class="bi bi-inbox" style="font-size: 2rem; opacity: 0.5;"></i><br>
-                                <strong>Aucun utilisateur trouvé</strong>
-                            </td>
-                        </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
 
-        <!-- Pagination -->
-        <?php if (!empty($users)): ?>
-            <div class="card-footer bg-light">
-                <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">
-                        Affichage de 1–<?= min(6, count($users)) ?> sur <?= $total ?> entrées
-                    </small>
-                    <?php if ($pager): ?>
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination pagination-sm mb-0">
-                                <?= $pager->links('default', 'bootstrap_pagination') ?>
-                            </ul>
-                        </nav>
-                    <?php endif; ?>
-                </div>
-            </div>
-        <?php endif; ?>
-    </div>
-</div>
+                            <tr>
+                                <td><input type="checkbox" /></td>
+                                <td>
+                                    <div style="display:flex;align-items:center;gap:10px">
+                                        <div class="avatar-sm" style="background:linear-gradient(135deg,#8b5cf6,#ec4899)">FR</div>
+                                        <div>
+                                            <div style="font-weight:600">Fanja Razafy</div>
+                                            <div style="font-size:11px;color:var(--c-muted)">fanja.razafy@si.mg</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="color:var(--c-muted);font-family:monospace">USR-0042</td>
+                                <td><span class="badge badge-amber">Gestionnaire</span></td>
+                                <td>Finance</td>
+                                <td>2026-04-28 17:45</td>
+                                <td><span class="badge badge-green">Actif</span></td>
+                                <td>
+                                    <div class="td-actions">
+                                        <button class="action-btn" title="Voir"><svg viewBox="0 0 24 24">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                                <circle cx="12" cy="12" r="3" />
+                                            </svg></button>
+                                        <a href="<?= site_url('form') ?>" class="action-btn" title="Modifier"><svg viewBox="0 0 24 24">
+                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                            </svg></a>
+                                        <button class="action-btn del" title="Supprimer"><svg viewBox="0 0 24 24">
+                                                <polyline points="3 6 5 6 21 6" />
+                                                <path d="M19 6l-1 14H6L5 6" />
+                                                <path d="M10 11v6M14 11v6" />
+                                                <path d="M9 6V4h6v2" />
+                                            </svg></button>
+                                    </div>
+                                </td>
+                            </tr>
 
-<style>
-    .avatar {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        font-weight: bold;
-        color: white;
-    }
+                            <tr>
+                                <td><input type="checkbox" /></td>
+                                <td>
+                                    <div style="display:flex;align-items:center;gap:10px">
+                                        <div class="avatar-sm" style="background:linear-gradient(135deg,#f59e0b,#ef4444)">HR</div>
+                                        <div>
+                                            <div style="font-weight:600">Hery Ranaivo</div>
+                                            <div style="font-size:11px;color:var(--c-muted)">hery.ranaivo@si.mg</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="color:var(--c-muted);font-family:monospace">USR-0043</td>
+                                <td><span class="badge badge-gray">Auditeur</span></td>
+                                <td>RH</td>
+                                <td>2026-04-25 10:00</td>
+                                <td><span class="badge badge-amber">Inactif</span></td>
+                                <td>
+                                    <div class="td-actions">
+                                        <button class="action-btn" title="Voir"><svg viewBox="0 0 24 24">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                                <circle cx="12" cy="12" r="3" />
+                                            </svg></button>
+                                        <a href="<?= site_url('form') ?>" class="action-btn" title="Modifier"><svg viewBox="0 0 24 24">
+                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                            </svg></a>
+                                        <button class="action-btn del" title="Supprimer"><svg viewBox="0 0 24 24">
+                                                <polyline points="3 6 5 6 21 6" />
+                                                <path d="M19 6l-1 14H6L5 6" />
+                                                <path d="M10 11v6M14 11v6" />
+                                                <path d="M9 6V4h6v2" />
+                                            </svg></button>
+                                    </div>
+                                </td>
+                            </tr>
 
-    .table-hover tbody tr:hover {
-        background-color: #f8f9fa !important;
-    }
+                            <tr>
+                                <td><input type="checkbox" /></td>
+                                <td>
+                                    <div style="display:flex;align-items:center;gap:10px">
+                                        <div class="avatar-sm" style="background:linear-gradient(135deg,#22c55e,#06b6d4)">LR</div>
+                                        <div>
+                                            <div style="font-weight:600">Lalao Rabenja</div>
+                                            <div style="font-size:11px;color:var(--c-muted)">lalao.rabenja@si.mg</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="color:var(--c-muted);font-family:monospace">USR-0044</td>
+                                <td><span class="badge badge-gray">Opérateur</span></td>
+                                <td>Commercial</td>
+                                <td>2026-04-29 09:30</td>
+                                <td><span class="badge badge-green">Actif</span></td>
+                                <td>
+                                    <div class="td-actions">
+                                        <button class="action-btn" title="Voir"><svg viewBox="0 0 24 24">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                                <circle cx="12" cy="12" r="3" />
+                                            </svg></button>
+                                        <a href="<?= site_url('form') ?>" class="action-btn" title="Modifier"><svg viewBox="0 0 24 24">
+                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                            </svg></a>
+                                        <button class="action-btn del" title="Supprimer"><svg viewBox="0 0 24 24">
+                                                <polyline points="3 6 5 6 21 6" />
+                                                <path d="M19 6l-1 14H6L5 6" />
+                                                <path d="M10 11v6M14 11v6" />
+                                                <path d="M9 6V4h6v2" />
+                                            </svg></button>
+                                    </div>
+                                </td>
+                            </tr>
 
-    .btn-group-sm .btn {
-        padding: 0.25rem 0.5rem;
-        font-size: 0.875rem;
-    }
+                            <tr>
+                                <td><input type="checkbox" /></td>
+                                <td>
+                                    <div style="display:flex;align-items:center;gap:10px">
+                                        <div class="avatar-sm" style="background:linear-gradient(135deg,#ef4444,#8b5cf6)">MT</div>
+                                        <div>
+                                            <div style="font-weight:600">Miora Tsarafidy</div>
+                                            <div style="font-size:11px;color:var(--c-muted)">miora.tsarafidy@si.mg</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="color:var(--c-muted);font-family:monospace">USR-0045</td>
+                                <td><span class="badge badge-amber">Gestionnaire</span></td>
+                                <td>DSI</td>
+                                <td>—</td>
+                                <td><span class="badge badge-red">Suspendu</span></td>
+                                <td>
+                                    <div class="td-actions">
+                                        <button class="action-btn" title="Voir"><svg viewBox="0 0 24 24">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                                <circle cx="12" cy="12" r="3" />
+                                            </svg></button>
+                                        <a href="form.html" class="action-btn" title="Modifier"><svg viewBox="0 0 24 24">
+                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                            </svg></a>
+                                        <button class="action-btn del" title="Supprimer"><svg viewBox="0 0 24 24">
+                                                <polyline points="3 6 5 6 21 6" />
+                                                <path d="M19 6l-1 14H6L5 6" />
+                                                <path d="M10 11v6M14 11v6" />
+                                                <path d="M9 6V4h6v2" />
+                                            </svg></button>
+                                    </div>
+                                </td>
+                            </tr>
 
-    .table thead th {
-        border-bottom: 2px solid #dee2e6;
-        font-weight: 600;
-        color: #495057;
-        text-transform: uppercase;
-        font-size: 0.85rem;
-        letter-spacing: 0.5px;
-    }
+                            <tr>
+                                <td><input type="checkbox" /></td>
+                                <td>
+                                    <div style="display:flex;align-items:center;gap:10px">
+                                        <div class="avatar-sm" style="background:linear-gradient(135deg,#06b6d4,#22c55e)">RN</div>
+                                        <div>
+                                            <div style="font-weight:600">Rodin Nomenjanahary</div>
+                                            <div style="font-size:11px;color:var(--c-muted)">rodin.n@si.mg</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="color:var(--c-muted);font-family:monospace">USR-0046</td>
+                                <td><span class="badge badge-blue">Administrateur</span></td>
+                                <td>DSI</td>
+                                <td>2026-04-29 07:55</td>
+                                <td><span class="badge badge-green">Actif</span></td>
+                                <td>
+                                    <div class="td-actions">
+                                        <button class="action-btn" title="Voir"><svg viewBox="0 0 24 24">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                                <circle cx="12" cy="12" r="3" />
+                                            </svg></button>
+                                        <a href="form.html" class="action-btn" title="Modifier"><svg viewBox="0 0 24 24">
+                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                            </svg></a>
+                                        <button class="action-btn del" title="Supprimer"><svg viewBox="0 0 24 24">
+                                                <polyline points="3 6 5 6 21 6" />
+                                                <path d="M19 6l-1 14H6L5 6" />
+                                                <path d="M10 11v6M14 11v6" />
+                                                <path d="M9 6V4h6v2" />
+                                            </svg></button>
+                                    </div>
+                                </td>
+                            </tr>
 
-    code {
-        background-color: #f5f5f5;
-        padding: 0.2rem 0.4rem;
-        border-radius: 3px;
-        color: #d63384;
-    }
-</style>
+                        </tbody>
+                    </table>
 
-<script>
-    // Sélectionner tous les utilisateurs
-    document.getElementById('selectAll')?.addEventListener('change', function() {
-        document.querySelectorAll('.user-checkbox').forEach(cb => {
-            cb.checked = this.checked;
-        });
-    });
+                    <div class="pagination">
+                        <span>Affichage de <strong>1–6</strong> sur <strong>284</strong> entrées</span>
+                        <div class="page-btns">
+                            <button class="page-btn">‹</button>
+                            <button class="page-btn active">1</button>
+                            <button class="page-btn">2</button>
+                            <button class="page-btn">3</button>
+                            <button class="page-btn">…</button>
+                            <button class="page-btn">48</button>
+                            <button class="page-btn">›</button>
+                        </div>
+                    </div>
 
-    // Mettre à jour le statut du checkbox "Sélectionner tout"
-    document.querySelectorAll('.user-checkbox').forEach(cb => {
-        cb.addEventListener('change', function() {
-            const allChecked = document.querySelectorAll('.user-checkbox:not(:checked)').length === 0;
-            document.getElementById('selectAll').checked = allChecked;
-        });
-    });
+                </div><!-- /table-card -->
 
-    // Activer les tooltips Bootstrap
-    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
-        new bootstrap.Tooltip(el);
-    });
-</script>
+            </div><!-- /content -->
+        </div><!-- /main -->
+    </div><!-- /app -->
 
-<?php $this->endSection(); ?>
+</body>
+
+</html>
