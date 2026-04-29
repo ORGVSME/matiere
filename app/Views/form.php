@@ -48,7 +48,7 @@
               Accueil / Utilisateurs / <span>Nouveau</span>
             </div>
           </div>
-          <a href="list.html" class="btn btn-secondary btn-sm">
+          <a href="<?= site_url('utilisateurs') ?>" class="btn btn-secondary btn-sm">
             <svg viewBox="0 0 24 24">
               <polyline points="15 18 9 12 15 6" />
             </svg>
