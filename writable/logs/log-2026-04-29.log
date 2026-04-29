@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 ERROR - 2026-04-29 08:11:10 --> Unknown column 'DISTINCT' in 'field list'
 in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
  1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `DISTINCT` `role`
@@ -136,3 +137,155 @@ FROM `users`', [], false)
 11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
 12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
 13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+=======
+ERROR - 2026-04-29 08:11:24 --> Error connecting to the database: mysqli_sql_exception: No such file or directory in /home/manou/s4/Web/note/system/Database/MySQLi/Connection.php:201
+Stack trace:
+#0 /home/manou/s4/Web/note/system/Database/MySQLi/Connection.php(201): mysqli->real_connect()
+#1 /home/manou/s4/Web/note/system/Database/BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect()
+#2 /home/manou/s4/Web/note/system/Database/BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#3 /home/manou/s4/Web/note/system/Database/BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query()
+#4 /home/manou/s4/Web/note/system/Model.php(295): CodeIgniter\Database\BaseBuilder->get()
+#5 /home/manou/s4/Web/note/system/BaseModel.php(714): CodeIgniter\Model->doFirst()
+#6 /home/manou/s4/Web/note/app/Models/User.php(40): CodeIgniter\BaseModel->first()
+#7 /home/manou/s4/Web/note/app/Controllers/Home.php(39): App\Models\User->authenticate()
+#8 /home/manou/s4/Web/note/system/CodeIgniter.php(951): App\Controllers\Home->authenticate()
+#9 /home/manou/s4/Web/note/system/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 /home/manou/s4/Web/note/system/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+#11 /home/manou/s4/Web/note/system/Boot.php(417): CodeIgniter\CodeIgniter->run()
+#12 /home/manou/s4/Web/note/system/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+#13 /home/manou/s4/Web/note/public/index.php(59): CodeIgniter\Boot::bootWeb()
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: No such file or directory in /home/manou/s4/Web/note/system/Database/MySQLi/Connection.php:231
+Stack trace:
+#0 /home/manou/s4/Web/note/system/Database/BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect()
+#1 /home/manou/s4/Web/note/system/Database/BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#2 /home/manou/s4/Web/note/system/Database/BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query()
+#3 /home/manou/s4/Web/note/system/Model.php(295): CodeIgniter\Database\BaseBuilder->get()
+#4 /home/manou/s4/Web/note/system/BaseModel.php(714): CodeIgniter\Model->doFirst()
+#5 /home/manou/s4/Web/note/app/Models/User.php(40): CodeIgniter\BaseModel->first()
+#6 /home/manou/s4/Web/note/app/Controllers/Home.php(39): App\Models\User->authenticate()
+#7 /home/manou/s4/Web/note/system/CodeIgniter.php(951): App\Controllers\Home->authenticate()
+#8 /home/manou/s4/Web/note/system/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#9 /home/manou/s4/Web/note/system/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+#10 /home/manou/s4/Web/note/system/Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 /home/manou/s4/Web/note/system/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+#12 /home/manou/s4/Web/note/public/index.php(59): CodeIgniter\Boot::bootWeb()
+#13 {main}
+CRITICAL - 2026-04-29 08:11:24 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: No such file or directory
+[Method: POST, Route: home/authenticate]
+in SYSTEMPATH/Database/BaseConnection.php on line 606.
+ 1 SYSTEMPATH/Database/BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH/Database/BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query()
+ 3 SYSTEMPATH/Model.php(295): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH/BaseModel.php(714): CodeIgniter\Model->doFirst()
+ 5 APPPATH/Models/User.php(40): CodeIgniter\BaseModel->first()
+ 6 APPPATH/Controllers/Home.php(39): App\Models\User->authenticate()
+ 7 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\Home->authenticate()
+ 8 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 9 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+10 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+12 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+ERROR - 2026-04-29 08:11:57 --> Error connecting to the database: mysqli_sql_exception: Unknown database 'note' in /home/manou/s4/Web/note/system/Database/MySQLi/Connection.php:201
+Stack trace:
+#0 /home/manou/s4/Web/note/system/Database/MySQLi/Connection.php(201): mysqli->real_connect()
+#1 /home/manou/s4/Web/note/system/Database/BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect()
+#2 /home/manou/s4/Web/note/system/Database/BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#3 /home/manou/s4/Web/note/system/Database/BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query()
+#4 /home/manou/s4/Web/note/system/Model.php(295): CodeIgniter\Database\BaseBuilder->get()
+#5 /home/manou/s4/Web/note/system/BaseModel.php(714): CodeIgniter\Model->doFirst()
+#6 /home/manou/s4/Web/note/app/Models/User.php(40): CodeIgniter\BaseModel->first()
+#7 /home/manou/s4/Web/note/app/Controllers/Home.php(39): App\Models\User->authenticate()
+#8 /home/manou/s4/Web/note/system/CodeIgniter.php(951): App\Controllers\Home->authenticate()
+#9 /home/manou/s4/Web/note/system/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 /home/manou/s4/Web/note/system/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+#11 /home/manou/s4/Web/note/system/Boot.php(417): CodeIgniter\CodeIgniter->run()
+#12 /home/manou/s4/Web/note/system/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+#13 /home/manou/s4/Web/note/public/index.php(59): CodeIgniter\Boot::bootWeb()
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Unknown database 'note' in /home/manou/s4/Web/note/system/Database/MySQLi/Connection.php:231
+Stack trace:
+#0 /home/manou/s4/Web/note/system/Database/BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect()
+#1 /home/manou/s4/Web/note/system/Database/BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#2 /home/manou/s4/Web/note/system/Database/BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query()
+#3 /home/manou/s4/Web/note/system/Model.php(295): CodeIgniter\Database\BaseBuilder->get()
+#4 /home/manou/s4/Web/note/system/BaseModel.php(714): CodeIgniter\Model->doFirst()
+#5 /home/manou/s4/Web/note/app/Models/User.php(40): CodeIgniter\BaseModel->first()
+#6 /home/manou/s4/Web/note/app/Controllers/Home.php(39): App\Models\User->authenticate()
+#7 /home/manou/s4/Web/note/system/CodeIgniter.php(951): App\Controllers\Home->authenticate()
+#8 /home/manou/s4/Web/note/system/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#9 /home/manou/s4/Web/note/system/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+#10 /home/manou/s4/Web/note/system/Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 /home/manou/s4/Web/note/system/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+#12 /home/manou/s4/Web/note/public/index.php(59): CodeIgniter\Boot::bootWeb()
+#13 {main}
+CRITICAL - 2026-04-29 08:11:57 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Unknown database 'note'
+[Method: POST, Route: home/authenticate]
+in SYSTEMPATH/Database/BaseConnection.php on line 606.
+ 1 SYSTEMPATH/Database/BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH/Database/BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query()
+ 3 SYSTEMPATH/Model.php(295): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH/BaseModel.php(714): CodeIgniter\Model->doFirst()
+ 5 APPPATH/Models/User.php(40): CodeIgniter\BaseModel->first()
+ 6 APPPATH/Controllers/Home.php(39): App\Models\User->authenticate()
+ 7 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\Home->authenticate()
+ 8 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 9 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+10 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+12 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+ERROR - 2026-04-29 08:12:31 --> Error connecting to the database: mysqli_sql_exception: Unknown database 'note' in /home/manou/s4/Web/note/system/Database/MySQLi/Connection.php:201
+Stack trace:
+#0 /home/manou/s4/Web/note/system/Database/MySQLi/Connection.php(201): mysqli->real_connect()
+#1 /home/manou/s4/Web/note/system/Database/BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect()
+#2 /home/manou/s4/Web/note/system/Database/BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#3 /home/manou/s4/Web/note/system/Database/BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query()
+#4 /home/manou/s4/Web/note/system/Model.php(295): CodeIgniter\Database\BaseBuilder->get()
+#5 /home/manou/s4/Web/note/system/BaseModel.php(714): CodeIgniter\Model->doFirst()
+#6 /home/manou/s4/Web/note/app/Models/User.php(40): CodeIgniter\BaseModel->first()
+#7 /home/manou/s4/Web/note/app/Controllers/Home.php(39): App\Models\User->authenticate()
+#8 /home/manou/s4/Web/note/system/CodeIgniter.php(951): App\Controllers\Home->authenticate()
+#9 /home/manou/s4/Web/note/system/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 /home/manou/s4/Web/note/system/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+#11 /home/manou/s4/Web/note/system/Boot.php(417): CodeIgniter\CodeIgniter->run()
+#12 /home/manou/s4/Web/note/system/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+#13 /home/manou/s4/Web/note/public/index.php(59): CodeIgniter\Boot::bootWeb()
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Unknown database 'note' in /home/manou/s4/Web/note/system/Database/MySQLi/Connection.php:231
+Stack trace:
+#0 /home/manou/s4/Web/note/system/Database/BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect()
+#1 /home/manou/s4/Web/note/system/Database/BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#2 /home/manou/s4/Web/note/system/Database/BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query()
+#3 /home/manou/s4/Web/note/system/Model.php(295): CodeIgniter\Database\BaseBuilder->get()
+#4 /home/manou/s4/Web/note/system/BaseModel.php(714): CodeIgniter\Model->doFirst()
+#5 /home/manou/s4/Web/note/app/Models/User.php(40): CodeIgniter\BaseModel->first()
+#6 /home/manou/s4/Web/note/app/Controllers/Home.php(39): App\Models\User->authenticate()
+#7 /home/manou/s4/Web/note/system/CodeIgniter.php(951): App\Controllers\Home->authenticate()
+#8 /home/manou/s4/Web/note/system/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#9 /home/manou/s4/Web/note/system/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+#10 /home/manou/s4/Web/note/system/Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 /home/manou/s4/Web/note/system/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+#12 /home/manou/s4/Web/note/public/index.php(59): CodeIgniter\Boot::bootWeb()
+#13 {main}
+CRITICAL - 2026-04-29 08:12:31 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Unknown database 'note'
+[Method: POST, Route: home/authenticate]
+in SYSTEMPATH/Database/BaseConnection.php on line 606.
+ 1 SYSTEMPATH/Database/BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH/Database/BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query()
+ 3 SYSTEMPATH/Model.php(295): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH/BaseModel.php(714): CodeIgniter\Model->doFirst()
+ 5 APPPATH/Models/User.php(40): CodeIgniter\BaseModel->first()
+ 6 APPPATH/Controllers/Home.php(39): App\Models\User->authenticate()
+ 7 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\Home->authenticate()
+ 8 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 9 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+10 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+12 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+>>>>>>> Stashed changes
