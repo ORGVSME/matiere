@@ -4,9 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SysInfo — Tableau de bord</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="<?= base_url('style.css') ?>" />
 </head>
 <body>
+<?php
+  $userName = session()->get('name') ?? 'Utilisateur';
+  $userEmail = session()->get('email') ?? 'user@example.com';
+  $userInitials = strtoupper(substr($userName, 0, 2));
+  if (!session()->get('is_logged_in')) {
+    return redirect()->to('/');
+  }
+?>
 
 <div class="app">
 
@@ -24,16 +32,16 @@
 
     <div class="sidebar-section">Navigation</div>
 
-    <a href="dashboard.html" class="nav-item active">
+    <a href="<?= base_url('dashboard') ?>" class="nav-item active">
       <svg viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
       Tableau de bord
     </a>
-    <a href="list.html" class="nav-item">
+    <a href="#" class="nav-item">
       <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
       Utilisateurs
       <span class="nav-badge">24</span>
     </a>
-    <a href="form.html" class="nav-item">
+    <a href="#" class="nav-item">
       <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
       Formulaire
     </a>
@@ -65,12 +73,16 @@
     </a>
 
     <div class="sidebar-bottom">
-      <a href="login.html" class="user-row">
-        <div class="avatar">AD</div>
+      <div class="user-row">
+        <div class="avatar"><?= $userInitials ?></div>
         <div class="user-info">
-          <div class="name">Admin Sys</div>
-          <div class="role">Super administrateur</div>
+          <div class="name"><?= $userName ?></div>
+          <div class="role">Administrateur</div>
         </div>
+      </div>
+      <a href="<?= base_url('logout') ?>" style="display:flex;align-items:center;gap:8px;padding:10px;margin-top:8px;border-radius:8px;color:rgba(255,255,255,.65);text-decoration:none;font-size:12px;transition:background .15s;cursor:pointer" onclick="this.style.background='rgba(255,255,255,.08)'">
+        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Se déconnecter
       </a>
     </div>
   </aside>
